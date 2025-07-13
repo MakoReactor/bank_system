@@ -46,9 +46,24 @@ def sacar(*, saldo, valor, extrato, valor_limite_saque, limite_qntde_saque, qntd
     
 
 
+# Extrato
+def exibir_extrato(saldo,*, extrato):
+    print(f"{'Extrato'.center(40, '=')}")
+    if extrato:
+        print(extrato)
+        print(f"\nSaldo R${saldo:31.2f}")
+        print(f"{'='.center(40, '=')}")
+    else:
+        print("Sem Trasações financeiras")
+        print(f"\nSaldo R${saldo:31.2f}")
+        print(f"{'='.center(40, '=')}")
 
-def exibir_extrato(extrato):
-    return extrato
+def criar_usuario(cpf, nome, data_nascimento, endereco):
+    if cpf in usuarios:
+        print(f"Usuário {cpf[nome]} já existe")
+        return False
+
+    
 
 
 def main():
@@ -56,6 +71,7 @@ def main():
     saldo = 0.0
     extrato = ""
     qntde_saques_efetuada = 0
+    usuarios = []
 
     # Constantes
     VALOR_LIMITE_SAQUE = 500.0
@@ -95,22 +111,14 @@ def main():
                     qntde_saques_efetuada=qntde_saques_efetuada)
                 qntde_saques_efetuada += 1
                 
-
             else:
                 print("Saque 'NÃO' efetuado!")
-
-            
-
-          
+                    
         # Extrato
         elif op == 3 or op == '3':
-            print(f"{'Extrato'.center(40, '=')}")
-            if extrato:
-                print(extrato)
-            else:
-                print("Sem Trasações financeiras")
-            print(f"\nSaldo R${saldo:31.2f}")
-            print(f"{'='.center(40, '=')}")
+            exibir_extrato(saldo, extrato=extrato)
+        elif op == 4 or op == '4':
+
 
         # Sair
         elif int(op) == 6 or op == "6":
