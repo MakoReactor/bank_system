@@ -1,3 +1,6 @@
+import functools
+from datetime import datetime
+
 from sistema_bancario import (
     PessoaFisica, ContaCorrente,
     Saque, Deposito
@@ -20,14 +23,31 @@ def menu():
     return inicio
 
 
+# decorator exibe um log com tranção e timestamp
+def log(funcao):
+    @functools.wraps(funcao)
+    def wrapper(*args, **kwargs):
+        # Captura a data e hora
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"[LOG] {funcao.__name__}: {timestamp}")
+
+        resultado = funcao(*args, *kwargs)
+
+        return resultado
+       
+    return wrapper
+
+
 # pesquisar pessoa
+
 def filtrar_pessoa(cpf, clientes):
     
     for cliente in clientes:
         if cliente.cpf == cpf:
             return cliente
     return None
-    
+
+@log
 def cadastro_cliente(clientes):
     cpf = input("CPF (somente números): ")
 
@@ -45,7 +65,7 @@ def cadastro_cliente(clientes):
     print("\n=== Cliente criado com Sucesso! ===")
 
 
-
+@log
 def cria_conta(clientes, contas, num_conta):
     cpf = input("Digite o CPF: ")
 
@@ -61,12 +81,14 @@ def cria_conta(clientes, contas, num_conta):
     
 
 # Listar Contas
+@log
 def listar_contas(contas):
     print("=" * 40)
     for conta in contas:
         print(conta)
     print("=" * 40)
 
+@log
 def listar_pessoas(clientes):
     print("=" * 40)
     for cliente in clientes:
@@ -76,6 +98,8 @@ def listar_pessoas(clientes):
         
     print("=" * 40)
 
+
+@log
 def depositar(clientes):
     cpf = input("Qual o CPF da conta: ")
     num_conta = int(input("Digite o número da Conta: "))
@@ -92,8 +116,7 @@ def depositar(clientes):
 
     print("xxx Cliente ou Conta não encontrado! xxx")
             
-                
-    
+@log
 def sacar(clientes):
     cpf = input("Qual o CPF da conta: ")
     num_conta = int(input("Digite o número da Conta: "))
@@ -110,7 +133,7 @@ def sacar(clientes):
 
     print("xxx Cliente ou Conta não encontrado! xxx")
                
-    
+@log
 def extrato(clientes):
     
     cpf = input("Qual o CPF da conta: ")
@@ -156,22 +179,18 @@ def main():
         elif op == "3":
             extrato(clientes)
 
-        elif op == "4":
-            print("Cadastro de Cliente\n")
+        elif op == "4":        
             cadastro_cliente(clientes)   
 
-        elif op == '5':
-            print("Criar Conta Corrente\n")
+        elif op == '5':           
             num_conta = len(contas) + 1
             cria_conta(clientes, contas, num_conta)
 
-        elif op == "6":
-            print("Listar Contas")
+        elif op == "6":            
             listar_contas(contas)
 
-        elif op == '7':
-            print("Listar Clientes")
-            listar_pessoas(clientes=clientes)
+        elif op == '7':            
+            listar_pessoas(clientes)
 
         elif op == "9":
             print("--- Obrigado por usar os nossos serviços! ---")
