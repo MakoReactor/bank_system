@@ -112,7 +112,7 @@ class ContaCorrente(Conta):
 
 
     def __str__(self):
-        return f"Agência: {self.agencia}, C/C: {self.numero}, Titular: {self.cliente.nome}"
+        return f"Agência: {self.agencia}, C/C: {self.numero}, Titular: {self.cliente.nome}, Saldo: {self.saldo:.2f}"
 
 
 
